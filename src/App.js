@@ -54,9 +54,33 @@ export default function App() {
 
   return (
     <>
-      <NavBar movies={movies} />
-      <Main movies={movies} />
+      <NavBar>
+        <Search />
+        <NumResults movies={movies}></NumResults>
+      </NavBar>
+      <Main>
+        <ListBox>
+          <MovieList movies={movies} />
+        </ListBox>
+        <WatchedBox />
+      </Main>
     </>
+  )
+}
+function NavBar({ children }) {
+  return (
+    <nav className='nav-bar'>
+      <Logo />
+      {children}
+    </nav>
+  )
+}
+
+function NumResults({ movies }) {
+  return (
+    <p className='num-results'>
+      Found <strong>{movies.length}</strong> results
+    </p>
   )
 }
 function Search() {
@@ -72,22 +96,7 @@ function Search() {
     />
   )
 }
-function NavBar({ movies }) {
-  return (
-    <nav className='nav-bar'>
-      <Logo />
-      <Search />
-      <NumResults movies={movies} />
-    </nav>
-  )
-}
-function NumResults({ movies }) {
-  return (
-    <p className='num-results'>
-      Found <strong>{movies.length}</strong> results
-    </p>
-  )
-}
+
 function Logo() {
   return (
     <div className='logo'>
@@ -97,13 +106,8 @@ function Logo() {
   )
 }
 
-function Main({ movies }) {
-  return (
-    <main className='main'>
-      <ListBox movies={movies} />
-      <WatchedBox />
-    </main>
-  )
+function Main({ children }) {
+  return <main className='main'>{children}</main>
 }
 function WatchedSummary({ watched }) {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating))
@@ -186,7 +190,7 @@ function WatchedBox() {
     </div>
   )
 }
-function ListBox({ movies }) {
+function ListBox({ children }) {
   const [isOpen1, setIsOpen1] = useState(true)
   return (
     <div className='box'>
@@ -196,7 +200,7 @@ function ListBox({ movies }) {
       >
         {isOpen1 ? "–" : "+"}
       </button>
-      {isOpen1 && <MovieList movies={movies} />}
+      {isOpen1 && children}
     </div>
   )
 }
