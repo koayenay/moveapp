@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const tempMovieData = [
   {
@@ -52,10 +52,18 @@ const KEY = "f2b1839"
 export default function App() {
   const [movies, setMovies] = useState([])
   const [watched, setWatched] = useState([])
+  const query = "interstellar"
 
-  fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
-    .then((res) => res.json())
-    .then((data) => console.log(data))
+  useEffect(function () {
+    async function fetchMovies() {
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+      )
+      const data = await res.json()
+      setMovies(data.Search)
+    }
+    fetchMovies()
+  }, [])
 
   return (
     <>
@@ -82,12 +90,17 @@ function NavBar({ children }) {
 }
 
 function NumResults({ movies }) {
+  if (!movies || movies.length === 0) {
+    return <p className='num-results'>No results found</p>
+  }
+
   return (
     <p className='num-results'>
       Found <strong>{movies.length}</strong> results
     </p>
   )
 }
+
 function Search() {
   const [query, setQuery] = useState("")
 
