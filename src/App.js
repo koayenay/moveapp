@@ -72,7 +72,6 @@ export default function App() {
     console.log("After every render")
   })
 
-  console.log("During render")
   */
 
   function handleSelectMovie(id) {
