@@ -68,9 +68,7 @@ export default function App() {
     },
     [query]
   )
-  useEffect(function () {
-    console.log("After every render")
-  })
+
 
   */
 
