@@ -62,12 +62,7 @@ export default function App() {
     console.log("After initial render")
   }, [])
 
-  useEffect(
-    function () {
-      console.log("D")
-    },
-    [query]
-  )
+
 
 
   */
