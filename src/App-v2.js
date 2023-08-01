@@ -49,7 +49,6 @@ const tempWatchedData = [
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0)
 const KEY = "f2b1839"
-
 export default function App() {
   const [query, setQuery] = useState("")
   const [movies, setMovies] = useState([])
@@ -178,9 +177,6 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     Director: director,
     Genre: genre,
   } = movie
-
-  //   /*eslint-disable*/
-  //   if (imdbRating > 8) [isTop, setIsTop] = useState(true)
 
   function handleAdd() {
     const newWatchedMovie = {
