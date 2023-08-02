@@ -53,10 +53,15 @@ const KEY = "f2b1839"
 export default function App() {
   const [query, setQuery] = useState("")
   const [movies, setMovies] = useState([])
-  const [watched, setWatched] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [selectedId, setSelectedId] = useState(null)
   const [error, setError] = useState("")
+
+  // const [watched, setWatched] = useState([])
+  const [watched, setWatched] = useState(function () {
+    const storedValue = localStorage.getItem("watched")
+    return JSON.parse(storedValue)
+  })
 
   function handleSelectMovie(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id))
@@ -68,10 +73,19 @@ export default function App() {
 
   function handleAddWatched(movie) {
     setWatched((watched) => [...watched, movie])
+
+    // localStorage.setItem("watched", JSON.stringify([...watched, movie]))
   }
   function handleDeleteWatched(id) {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id))
   }
+
+  useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched))
+    },
+    [watched]
+  )
 
   useEffect(
     function () {
@@ -387,11 +401,7 @@ function WatchedMovieList({ watched, onDeleteWatched }) {
   return (
     <ul className='list'>
       {watched.map((movie) => (
-        <WatchedMovie
-          movie={movie}
-          key={movie.imdbID}
-          onDeleteWatched={onDeleteWatched}
-        />
+        <WatchedMovie movie={movie} onDeleteWatched={onDeleteWatched} />
       ))}
     </ul>
   )
@@ -400,7 +410,7 @@ function WatchedMovie({ movie, onDeleteWatched }) {
   return (
     <li key={movie.imdbID}>
       <img src={movie.poster} alt={`${movie.title} poster`} />
-      <h3>{movie.Title}</h3>
+      <h3>{movie.title}</h3>
       <div>
         <p>
           <span>⭐️</span>
